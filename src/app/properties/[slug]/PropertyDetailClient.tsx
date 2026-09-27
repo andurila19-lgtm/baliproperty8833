@@ -55,11 +55,11 @@ export default function PropertyDetailClient({
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col font-sans overflow-x-hidden w-full max-w-full">
       {/* Force Solid Navbar */}
       <Navbar forceSolid={true} />
 
-      <main className="flex-1 pt-24 pb-20">
+      <main className="flex-1 pt-24 pb-20 overflow-x-hidden w-full max-w-full">
         {/* Breadcrumb Navigation */}
         <div className="max-w-7xl mx-auto px-5 sm:px-8 py-4">
           <div className="flex items-center justify-between">

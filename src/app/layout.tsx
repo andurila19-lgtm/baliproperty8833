@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
+import PreventZoom from "@/components/PreventZoom";
 
 const manrope = Manrope({
   variable: "--font-manrope",
@@ -8,6 +9,15 @@ const manrope = Manrope({
   weight: ["300", "400", "500", "600", "700", "800"],
   display: "swap",
 });
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  minimumScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://baliproperty8833.com"),
@@ -59,6 +69,7 @@ export default function RootLayout({
         className="min-h-screen bg-[#F8FAFC] text-[#0F172A] font-sans selection:bg-[#3178A1]/20 selection:text-[#3178A1] flex flex-col"
         suppressHydrationWarning
       >
+        <PreventZoom />
         {children}
       </body>
     </html>

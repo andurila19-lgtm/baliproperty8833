@@ -50,11 +50,11 @@ export default function HomePage() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans">
+    <div className="min-h-screen bg-white text-slate-900 flex flex-col font-sans overflow-x-hidden w-full max-w-full">
       {/* Dynamic Navbar with functional #tentangkami link */}
       <Navbar />
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-hidden w-full max-w-full">
         {/* 1. Hero Section with Search Card */}
         <Hero onSearch={handleSearch} />
 

@@ -159,7 +159,7 @@ export default function GallerySection() {
   };
 
   return (
-    <section id="galeri" className="py-20 sm:py-28 bg-white border-t border-slate-200/80 scroll-mt-20">
+    <section id="galeri" className="py-20 sm:py-28 bg-white border-t border-slate-200/80 scroll-mt-20 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
@@ -189,7 +189,7 @@ export default function GallerySection() {
             type="button"
             onClick={() => scrollFilters(-220)}
             aria-label="Geser ke kiri"
-            className="flex absolute -left-2 sm:-left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white shadow-lg border border-slate-200 items-center justify-center text-slate-700 hover:text-[#3178A1] hover:bg-slate-50 transition-all active:scale-90"
+            className="flex absolute left-1 sm:-left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white shadow-lg border border-slate-200 items-center justify-center text-slate-700 hover:text-[#3178A1] hover:bg-slate-50 transition-all active:scale-90"
           >
             <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
           </button>
@@ -231,7 +231,7 @@ export default function GallerySection() {
             type="button"
             onClick={() => scrollFilters(220)}
             aria-label="Geser ke kanan"
-            className="flex absolute -right-2 sm:-right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white shadow-lg border border-slate-200 items-center justify-center text-slate-700 hover:text-[#3178A1] hover:bg-slate-50 transition-all active:scale-90"
+            className="flex absolute right-1 sm:-right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white shadow-lg border border-slate-200 items-center justify-center text-slate-700 hover:text-[#3178A1] hover:bg-slate-50 transition-all active:scale-90"
           >
             <ChevronRight className="w-4 h-4 stroke-[2.5]" />
           </button>
