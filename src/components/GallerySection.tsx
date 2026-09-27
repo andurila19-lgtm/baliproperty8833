@@ -8,6 +8,8 @@ import {
   MessageCircle,
   ArrowRight,
   ExternalLink,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { SITE_CONFIG, getWhatsAppInquiryUrl } from "@/data/properties";
@@ -112,6 +114,40 @@ export default function GallerySection() {
   const [selectedCategory, setSelectedCategory] = useState<CategoryKey>("Semua");
   const [activeModalItem, setActiveModalItem] = useState<GalleryItem | null>(null);
 
+  const filterScrollRef = React.useRef<HTMLDivElement>(null);
+  const isDragging = React.useRef(false);
+  const startX = React.useRef(0);
+  const scrollLeftPos = React.useRef(0);
+  const hasMoved = React.useRef(false);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (!filterScrollRef.current) return;
+    isDragging.current = true;
+    hasMoved.current = false;
+    startX.current = e.pageX - filterScrollRef.current.offsetLeft;
+    scrollLeftPos.current = filterScrollRef.current.scrollLeft;
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging.current || !filterScrollRef.current) return;
+    const x = e.pageX - filterScrollRef.current.offsetLeft;
+    const walk = (x - startX.current) * 1.5;
+    if (Math.abs(walk) > 4) {
+      hasMoved.current = true;
+    }
+    filterScrollRef.current.scrollLeft = scrollLeftPos.current - walk;
+  };
+
+  const handleMouseUp = () => {
+    isDragging.current = false;
+  };
+
+  const scrollFilters = (offset: number) => {
+    if (filterScrollRef.current) {
+      filterScrollRef.current.scrollBy({ left: offset, behavior: "smooth" });
+    }
+  };
+
   const filteredItems =
     selectedCategory === "Semua"
       ? GALLERY_ITEMS
@@ -146,25 +182,59 @@ export default function GallerySection() {
           </p>
         </motion.div>
 
-        {/* Filter Pills */}
-        <div className="flex items-center justify-center gap-2 overflow-x-auto pb-4 mb-10 no-scrollbar">
-          {GALLERY_CATEGORIES.map((cat) => {
-            const isActive = selectedCategory === cat.key;
-            return (
-              <button
-                key={cat.key}
-                type="button"
-                onClick={() => setSelectedCategory(cat.key)}
-                className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-black tracking-wide uppercase transition-all whitespace-nowrap ${
-                  isActive
-                    ? "bg-[#3178A1] text-white shadow-md shadow-[#3178A1]/20 scale-102"
-                    : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
-                }`}
-              >
-                {cat.label}
-              </button>
-            );
-          })}
+        {/* Filter Pills with Free Drag + Geser Support */}
+        <div className="relative max-w-4xl mx-auto mb-10">
+          {/* Scroll Left Button */}
+          <button
+            type="button"
+            onClick={() => scrollFilters(-220)}
+            aria-label="Geser ke kiri"
+            className="flex absolute -left-2 sm:-left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white shadow-lg border border-slate-200 items-center justify-center text-slate-700 hover:text-[#3178A1] hover:bg-slate-50 transition-all active:scale-90"
+          >
+            <ChevronLeft className="w-4 h-4 stroke-[2.5]" />
+          </button>
+
+          {/* Filter Pills Container */}
+          <div
+            ref={filterScrollRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseUp}
+            className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none no-scrollbar cursor-grab active:cursor-grabbing select-none px-7 justify-start sm:justify-center touch-pan-x"
+            style={{ WebkitOverflowScrolling: "touch", scrollBehavior: "smooth" }}
+          >
+            {GALLERY_CATEGORIES.map((cat) => {
+              const isActive = selectedCategory === cat.key;
+              return (
+                <button
+                  key={cat.key}
+                  type="button"
+                  onClick={() => {
+                    if (hasMoved.current) return;
+                    setSelectedCategory(cat.key);
+                  }}
+                  className={`px-4 sm:px-5 py-2.5 rounded-full text-xs font-black tracking-wide uppercase transition-all whitespace-nowrap shrink-0 active:scale-95 shadow-2xs ${
+                    isActive
+                      ? "bg-[#3178A1] text-white shadow-md shadow-[#3178A1]/20 scale-102"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-900"
+                  }`}
+                >
+                  {cat.label}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Scroll Right Button */}
+          <button
+            type="button"
+            onClick={() => scrollFilters(220)}
+            aria-label="Geser ke kanan"
+            className="flex absolute -right-2 sm:-right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 rounded-full bg-white shadow-lg border border-slate-200 items-center justify-center text-slate-700 hover:text-[#3178A1] hover:bg-slate-50 transition-all active:scale-90"
+          >
+            <ChevronRight className="w-4 h-4 stroke-[2.5]" />
+          </button>
         </div>
 
         {/* Dynamic Gallery Grid */}
